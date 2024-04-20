@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from . models import Post
+from . models import BlogPost
 
 # Create your views here.
-def blog(request):
-    posts = Post.objects.all()
+def home(request):
+    posts = BlogPost.objects.all()
     context = {
         'posts': posts
     }

@@ -1,21 +1,17 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-# Create your models here.
-class User(models.Model):
-    username = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-    
-    def __str__(self):
-        return self.username
-
-class Post(models.Model):
+class BlogPost(models.Model):
     title = models.CharField(max_length=100)
     content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    publication_date = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, related_name='blog_posts', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.title
     
+class Comment(models.Model):
+    content = models.CharField(max_length=255)
+    publication_date = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, related_name='comments', on_delete=models.CASCADE)
+    post = models.ForeignKey(BlogPost, related_name='comments', on_delete=models.CASCADE)
